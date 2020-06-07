@@ -5,7 +5,7 @@ using namespace std;
 
 int number_of_strings(int argc, char* argv[])
 {
-    ifstream start(argv[1], ios::in | ios::binary);
+    ifstream start(argv[1]);
     if (!start) {
         cout << "Import file not found, maybe you renamed it" << endl;
         return 0;
@@ -23,16 +23,30 @@ int number_of_strings(int argc, char* argv[])
 
 void swap(int* numbers, char** mass, int strings)
 {
-    char* temp = new char[100];
+    char* b = new char[100];
     for (int i = 0; i < strings; i++) {
         for (int j = 0; j < strings - 1; j++) {
-            if (numbers[i] > numbers[j]) {
-                temp = mass[i];
-                mass[i] = mass[j];
-                mass[j] = temp;
+            if (numbers[j] > numbers[j + 1]) {
+                cout << "numbers[j]=" << numbers[j]
+                     << " numbers[j+1]=" << numbers[j + 1] << endl;
+                b = mass[j]; // создали дополнительную переменную
+                cout << "b = " << b << " mass[j]=" << mass[j] << endl;
+                mass[j] = mass[j + 1]; // меняем местами
+                mass[j + 1] = b;       // значения элементов
             }
         }
     }
+}
+
+void output(char** mass, int strings)
+{
+    FILE* out = fopen("out.txt", "w");
+    for (int i = 0; i < strings; i++) {
+        fputs(mass[i], out);
+        fputs("\n", out);
+    }
+
+    fclose(out);
 }
 
 void check(int* numbers, char** mass, int strings)
@@ -56,7 +70,7 @@ int main(int argc, char* argv[])
     for (int i = 0; i < strings; i++)
         mass[i] = new char[len];
 
-    ifstream work(argv[1], ios::in | ios::binary);
+    ifstream work(argv[1]);
 
     for (int r = 0; r < strings; r++) {
         work.getline(mass[r], len - 1, ch);
@@ -67,6 +81,11 @@ int main(int argc, char* argv[])
     check(numbers, mass, strings);
     for (int i = 0; i < strings; i++) {
         cout << numbers[i] << endl;
+    }
+    swap(numbers, mass, strings);
+    output(mass, strings);
+    for (int i = 0; i < strings; i++) {
+        cout << endl << endl << mass[i] << endl;
     }
     for (int i = 0; i < strings; i++)
         delete (mass[i]);
