@@ -8,6 +8,6 @@ build/src/main.o:src/main.cpp
 build/src/work_with_array.o:src/work_with_array.cpp
 	g++ -Wall -Werror -c src/work_with_array.cpp -o build/src/work_with_array.o
 run:
-	./bin/program ./input.txt ./output_inc.txt ./output_alph
+	./bin/program ./input.txt ./output_inc.txt ./output_alph.txt
 clean:
 	rm -rf build/src/*.o build/test/*.o bin/program bin/program_test output_inc.txt output_alph.txt
